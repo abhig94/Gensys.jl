@@ -30,10 +30,10 @@ G1, C, impact, qt', a, b, z, eu
 
 Also returned is the qz decomposition, qt'az' = Γ0, qt'bz' = Γ1, with a and b
 upper triangular and the system ordered so that all zeros on the diagonal of b are in
-the lower right corner, all cases where the real part of bii/aii is greater than or 
-equal to div appear in the next block above the zeros, and the remaining bii/aii's 
-all have bii/aii<div .  These elements can be used to construct the full backward and 
-forward solution.  See the paper \"Solving Linear Rational Expectations Models\", 
+the lower right corner, all cases where the real part of bii/aii is greater than or
+equal to div appear in the next block above the zeros, and the remaining bii/aii's
+all have bii/aii<div .  These elements can be used to construct the full backward and
+forward solution.  See the paper \"Solving Linear Rational Expectations Models\",
 http://eco-072399b.princeton.edu/yftp/gensys .  Note that if one simply wants the backwar
 and forward projection of y on eΨlon, ignoring existence and uniqueness questions, the
 projection can be computed by Fourier methods.
@@ -65,7 +65,7 @@ function gensysct(F::Base.LinAlg.GeneralizedSchur, c, Ψ, Π, div)
     eu = [0, 0]
     a, b = F[:S], F[:T]
     n = size(a, 1)
-    
+
     for i in 1:n
         if (abs(a[i, i]) < ϵ) && (abs(b[i, i]) < ϵ)
             info("Coincident zeros.  Indeterminacy and/or nonexistence.")
@@ -77,7 +77,7 @@ function gensysct(F::Base.LinAlg.GeneralizedSchur, c, Ψ, Π, div)
     end
     movelast = Bool[(real(b[i, i] / a[i, i]) > div) || (abs(a[i, i]) < ϵ) for i in 1:n]
     nunstab = sum(movelast)
-    FS = ordschur!(F, !movelast)
+    FS = ordschur!(F, .!movelast)
     a, b, qt, z = FS[:S], FS[:T], FS[:Q], FS[:Z]
 
     qt1 = qt[:, 1:(n - nunstab)]

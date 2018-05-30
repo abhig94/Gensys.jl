@@ -72,7 +72,7 @@ function gensysdt(F::Base.LinAlg.GeneralizedSchur, c, Ψ, Π, div)
 
     movelast = Bool[abs(b[i, i]) > div * abs(a[i, i]) for i in 1:n]
     nunstab = sum(movelast)
-    FS = ordschur!(F, !movelast)
+    FS = ordschur!(F, .!movelast)
     a, b, qt, z = FS[:S], FS[:T], FS[:Q], FS[:Z]
 
 
@@ -152,7 +152,7 @@ function gensysdt(F::Base.LinAlg.GeneralizedSchur, c, Ψ, Π, div)
     impact = real(z * impact)
     loose = real(z * loose)
     ywt = z * ywt
-    
+
     return G1, C, impact, fmat, fwt, ywt, gev, eu, loose
 end
 
